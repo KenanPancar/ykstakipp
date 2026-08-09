@@ -25,12 +25,15 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Complete Android platform files
+      - name: Prepare project
         run: |
           flutter create . --project-name yks_takip_app --org com.ykstakip --platforms=android
           flutter pub get
+          # Gradle 8.5 zorla
+          sed -i 's/gradle-.*-all.zip/gradle-8.5-all.zip/' android/gradle/wrapper/gradle-wrapper.properties
+          cat android/gradle/wrapper/gradle-wrapper.properties
 
-      - name: Build APK (release)
+      - name: Build APK
         run: flutter build apk --release
 
       - name: Upload APK
